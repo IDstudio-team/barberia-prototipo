@@ -909,3 +909,65 @@ section { padding: var(--section-pad); position: relative; }
   .gallery-item:first-child { grid-column: span 1; }
   .about-stats             { grid-template-columns: 1fr; gap: 1.5rem; }
 }
+
+/* ── Formulario de Citas (Google Calendar) ───────────── */
+.cita-form {
+  width: 100%;
+  max-width: 560px;
+  margin: 0 auto;
+}
+
+.cita-form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+.cita-form-grid .form-group.full {
+  grid-column: 1 / -1;
+}
+
+.cita-form-grid .form-actions.full {
+  grid-column: 1 / -1;
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-top: 0.5rem;
+}
+
+.cita-form-grid .form-msg.full {
+  grid-column: 1 / -1;
+}
+
+/* Select con estilo consistente */
+select.form-input {
+  cursor: pointer;
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+}
+
+select.form-input option {
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+}
+
+/* Input datetime-local */
+input[type="datetime-local"].form-input {
+  color-scheme: dark;
+}
+
+@media (max-width: 640px) {
+  .cita-form-grid {
+    grid-template-columns: 1fr;
+  }
+  .cita-form-grid .form-group.full,
+  .cita-form-grid .form-actions.full,
+  .cita-form-grid .form-msg.full {
+    grid-column: 1;
+  }
+  .cita-form-grid .form-actions.full {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

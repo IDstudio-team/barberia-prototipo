@@ -652,80 +652,74 @@
     </div>
   </section>
 
-
   <!-- ══════════════════════════════════════════════════════
-       AGENDAR CITA — Calendly / Booksy
+       CITAS GOOGLE CALENDAR
   ══════════════════════════════════════════════════════ -->
-  <section id="booking" aria-labelledby="booking-title">
-    <div class="container">
-      <div class="booking-content reveal">
-        <span class="section-label">Reserva Tu Lugar</span>
-        <h2 id="booking-title">
-          Agenda Tu <em style="font-style: italic; color: var(--gold);">Cita</em>
-        </h2>
-        <div class="gold-line centered"></div>
-        <p>
-          Selecciona tu servicio, elige tu barbero preferido y reserva en minutos. Sin filas, sin sorpresas.
-        </p>
-
-        <div class="booking-widget">
-
-          <!--
-            ════════════════════════════════════════════════
-            INTEGRACIÓN CALENDLY
-            Para activar el widget real:
-            1. Crea cuenta en https://calendly.com
-            2. Configura servicios, duración y disponibilidad
-            3. Ve a "Compartir" → "Añadir a sitio web" → "Insertar en línea"
-            4. Reemplaza el bloque de abajo con:
-
-            <div class="calendly-inline-widget"
-                 data-url="https://calendly.com/TU-USUARIO"
-                 style="min-width:320px;height:700px;">
-            </div>
-            <script type="text/javascript"
-                    src="https://assets.calendly.com/assets/external/widget.js"
-                    async></script>
-
-            Alternativa con Booksy:
-            Copiar el código embed desde tu perfil de negocio en Booksy.
-            ════════════════════════════════════════════════
-          -->
-
-          <!-- Placeholder visual mientras se integra Calendly -->
-          <div style="text-align: center; padding: 1.5rem 0; width: 100%; max-width: 480px;">
-            <svg xmlns="http://www.w3.org/2000/svg" width="46" height="46" viewBox="0 0 24 24"
-                 fill="none" stroke="var(--gold)" stroke-width="0.8"
-                 stroke-linecap="round" stroke-linejoin="round"
-                 style="margin-bottom: 1.8rem;" aria-hidden="true">
-              <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
-              <line x1="16" y1="2" x2="16" y2="6"/>
-              <line x1="8" y1="2" x2="8" y2="6"/>
-              <line x1="3" y1="10" x2="21" y2="10"/>
-              <circle cx="8" cy="14" r="0.5" fill="var(--gold)"/>
-              <circle cx="12" cy="14" r="0.5" fill="var(--gold)"/>
-              <circle cx="16" cy="14" r="0.5" fill="var(--gold)"/>
-              <circle cx="8" cy="18" r="0.5" fill="var(--gold)"/>
-              <circle cx="12" cy="18" r="0.5" fill="var(--gold)"/>
-            </svg>
-            <p style="color: var(--text-muted); font-size: 0.86rem; line-height: 1.85; max-width: 360px; margin: 0 auto 2.5rem;">
-              El sistema de citas en línea con Calendly se integrará en la siguiente fase del proyecto. Por ahora, agenda directamente por WhatsApp y te confirmamos tu horario al momento.
-            </p>
-            <a href="https://wa.me/522221234567?text=Hola%2C%20quiero%20agendar%20una%20cita%20en%20Barba%20Dumas."
-               target="_blank"
-               rel="noopener noreferrer"
-               class="btn btn-filled"
-               aria-label="Agendar cita por WhatsApp">
-              Agendar por WhatsApp
-            </a>
-          </div>
-
-          <p class="booking-note">Atención &middot; Lunes a Sábado &middot; 9:00 am – 8:00 pm</p>
-        </div>
+<div class="booking-widget">
+  <form id="citaForm" class="cita-form" novalidate aria-label="Formulario de cita">
+    
+    <div class="cita-form-grid">
+      
+      <div class="form-group">
+        <label for="citaNombre" class="form-label">Nombre Completo</label>
+        <input type="text" id="citaNombre" name="nombre" class="form-input"
+               placeholder="Tu nombre" required autocomplete="name" />
       </div>
-    </div>
-  </section>
 
+      <div class="form-group">
+        <label for="citaTelefono" class="form-label">Teléfono</label>
+        <input type="tel" id="citaTelefono" name="telefono" class="form-input"
+               placeholder="+52 222 000 0000" autocomplete="tel" />
+      </div>
+
+      <div class="form-group">
+        <label for="citaServicio" class="form-label">Servicio</label>
+        <select id="citaServicio" name="servicio" class="form-input" required>
+          <option value="" disabled selected>Selecciona un servicio</option>
+          <option value="Corte Clásico (60 min)"        data-dur="60">Corte Clásico — $150</option>
+          <option value="Arreglo de Barba (45 min)"     data-dur="45">Arreglo de Barba — $120</option>
+          <option value="Corte + Barba (90 min)"        data-dur="90">Corte + Barba — $250</option>
+          <option value="Tinte / Color (75 min)"        data-dur="75">Tinte / Color — $200</option>
+          <option value="Afeitado con Navaja (50 min)"  data-dur="50">Afeitado con Navaja — $180</option>
+          <option value="Tratamiento Capilar (60 min)"  data-dur="60">Tratamiento Capilar — $220</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="citaBarbero" class="form-label">Barbero (opcional)</label>
+        <select id="citaBarbero" name="barbero" class="form-input">
+          <option value="Sin preferencia">Sin preferencia</option>
+          <option value="Alejandro Dumas">Alejandro Dumas</option>
+          <option value="Rafael Montoya">Rafael Montoya</option>
+          <option value="Carlos Herrera">Carlos Herrera</option>
+        </select>
+      </div>
+
+      <div class="form-group full">
+        <label for="citaFechaHora" class="form-label">Fecha y Hora</label>
+        <input type="datetime-local" id="citaFechaHora" name="fechaHora"
+               class="form-input" required />
+      </div>
+
+      <div class="form-actions full">
+        <button type="submit" class="btn btn-filled" id="citaSubmitBtn"
+                style="font-size: 0.6rem;">
+          Confirmar Cita
+        </button>
+        <a href="https://wa.me/522221234567?text=Hola%2C%20quiero%20agendar%20una%20cita%20en%20Barba%20Dumas."
+           target="_blank" rel="noopener noreferrer"
+           class="btn" style="font-size: 0.6rem;">
+          Agendar por WhatsApp
+        </a>
+      </div>
+
+      <div id="citaMsg" class="form-msg full" role="alert" aria-live="polite"></div>
+    </div>
+
+  </form>
+
+  <p class="booking-note">Atención &middot; Lunes a Sábado &middot; 9:00 am – 8:00 pm</p>
+</div>
 
   <!-- ══════════════════════════════════════════════════════
        UBICACIÓN & HORARIOS
