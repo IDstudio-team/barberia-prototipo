@@ -793,8 +793,7 @@ onReady(() => {
    FORMULARIO DE CITAS — Google Calendar via Apps Script
 ══════════════════════════════════════════════════════ */
 (function () {
-  // ⚠️ Reemplaza esta URL con la que obtuviste en el Paso 6
-  const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwzG881W4th8fAcmivRu4NXJN4OVk8QAYHDpNvq5usbhaz-_UJfthk200vbgisjLgTO/exec';
+  const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx5TtxqERkgegqKrL6iNkblZ-nXxrM2kraWBHrcLmzcgPzRKQK20bKCks7JZ8DVGBM/exec';
 
   const form      = document.getElementById('citaForm');
   const msgEl     = document.getElementById('citaMsg');
@@ -802,70 +801,74 @@ onReady(() => {
 
   if (!form) return;
 
-  // Establecer fecha mínima = hoy, hora mínima = ahora
   const dtInput = document.getElementById('citaFechaHora');
   if (dtInput) {
-    const ahora = new Date();
-    // Ajustar a zona horaria local para el atributo min
+    const ahora  = new Date();
     const offset = ahora.getTimezoneOffset() * 60000;
     const localISO = new Date(ahora - offset).toISOString().slice(0, 16);
     dtInput.min = localISO;
   }
 
-form.addEventListener('submit', async function (e) {
-  e.preventDefault();
+  form.addEventListener('submit', async function (e) {
+    e.preventDefault();
 
-  const nombre   = document.getElementById('citaNombre').value.trim();
-  const servicio = document.getElementById('citaServicio');
-  const fechaHora = document.getElementById('citaFechaHora').value;
+    const nombre    = document.getElementById('citaNombre').value.trim();
+    const servicio  = document.getElementById('citaServicio');
+    const fechaHora = document.getElementById('citaFechaHora').value;
 
-  if (!nombre || !servicio.value || !fechaHora) {
-    mostrarMsg('Por favor completa todos los campos requeridos.', 'error');
-    return;
-  }
+    if (!nombre || !servicio.value || !fechaHora) {
+      mostrarMsg('Por favor completa todos los campos requeridos.', 'error');
+      return;
+    }
 
-  const duracion = parseInt(
-    servicio.options[servicio.selectedIndex].dataset.dur
-  ) || 60;
+    const duracion = parseInt(
+      servicio.options[servicio.selectedIndex].dataset.dur
+    ) || 60;
 
-  submitBtn.disabled = true;
-  submitBtn.textContent = 'Agendando…';
-  mostrarMsg('', '');
+    submitBtn.disabled    = true;
+    submitBtn.textContent = 'Agendando…';
+    mostrarMsg('', '');
 
-  const payload = {
-    nombre:    nombre,
-    telefono:  document.getElementById('citaTelefono').value.trim(),
-    servicio:  servicio.value,
-    barbero:   document.getElementById('citaBarbero').value,
-    fechaHora: new Date(fechaHora).toISOString(),
-    duracion:  duracion
-  };
+    const payload = {
+      nombre:    nombre,
+      telefono:  document.getElementById('citaTelefono').value.trim(),
+      servicio:  servicio.value,
+      barbero:   document.getElementById('citaBarbero').value,
+      fechaHora: new Date(fechaHora).toISOString(),
+      duracion:  duracion
+    };
 
-  try {
-    await fetch(APPS_SCRIPT_URL, {
-      method: 'POST',
-      mode: 'no-cors',
-      headers: { 'Content-Type': 'text/plain' },
-      body: JSON.stringify(payload)
-    });
+    try {
+      const params = new URLSearchParams({
+        nombre:    payload.nombre,
+        telefono:  payload.telefono,
+        servicio:  payload.servicio,
+        barbero:   payload.barbero,
+        fechaHora: payload.fechaHora,
+        duracion:  String(payload.duracion)
+      });
 
-    mostrarMsg('✦ ¡Cita confirmada! Te esperamos en Barba Dumas.', 'success');
-    form.reset();
+      await fetch(APPS_SCRIPT_URL + '?' + params.toString(), {
+        method: 'GET',
+        mode:   'no-cors'
+      });
 
-  } catch (err) {
-    mostrarMsg('Error de conexión. Intenta por WhatsApp o llámanos directamente.', 'error');
-    console.error('Fetch error:', err);
-  } finally {
-    submitBtn.disabled = false;
-    submitBtn.textContent = 'Confirmar Cita';
-  }
-});
+      mostrarMsg('✦ ¡Cita confirmada! Te esperamos en Barba Dumas.', 'success');
+      form.reset();
+
+    } catch (err) {
+      mostrarMsg('Error de conexión. Intenta por WhatsApp o llámanos directamente.', 'error');
+      console.error('Fetch error:', err);
+    } finally {
+      submitBtn.disabled    = false;
+      submitBtn.textContent = 'Confirmar Cita';
+    }
+  });
 
   function mostrarMsg(texto, tipo) {
-    msgEl.textContent = texto;
+    msgEl.textContent  = texto;
     msgEl.style.display = texto ? 'block' : 'none';
-    msgEl.style.color = tipo === 'error'
-      ? '#e07070'
-      : 'var(--gold)';
+    msgEl.style.color   = tipo === 'error' ? '#e07070' : 'var(--gold)';
   }
+
 })();
