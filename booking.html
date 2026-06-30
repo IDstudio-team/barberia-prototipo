@@ -1038,14 +1038,21 @@
   /* ══════════════════════════════════════════════════════════════
      CONFIGURACIÓN — ajusta estos valores
   ══════════════════════════════════════════════════════════════ */
-  const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx5TtxqERkgegqKrL6iNkblZ-nXxrM2kraWBHrcLmzcgPzRKQK20bKCks7JZ8DVGBM/exec';
+  const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxQ1VA0h2xQEw7bQPsixyHaBtRrxx8cPF8iZsO1Xw3IskAXc8mOsQdL-Decv9gbevi0/exec';
   // ↑ Reemplaza esta URL con la nueva URL de tu deployment actualizado
 
-  const WHATSAPP_NUM = '522221234567';
+  const WHATSAPP_NUM = '522223831878';
   // ↑ Reemplaza con el número real del barbero (con código de país, sin +)
 
-  const HORA_APERTURA = 9;   // 9:00 am
-  const HORA_CIERRE   = 20;  // 8:00 pm
+const HORARIO = {
+  0: null,                    // Domingo   — CERRADO
+  1: { abre: 9, cierra: 20 }, // Lunes     — 9:00 am a 8:00 pm
+  2: { abre: 9, cierra: 20 }, // Martes    — 9:00 am a 8:00 pm
+  3: { abre: 9, cierra: 20 }, // Miércoles — 9:00 am a 8:00 pm
+  4: { abre: 9, cierra: 20 }, // Jueves    — 9:00 am a 8:00 pm
+  5: { abre: 9, cierra: 20 }, // Viernes   — 9:00 am a 8:00 pm
+  6: { abre: 9, cierra: 18 }, // Sábado    — 9:00 am a 6:00 pm
+};
 
   /* ══════════════════════════════════════════════════════════════
      DATOS
