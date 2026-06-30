@@ -1038,21 +1038,29 @@
   /* ══════════════════════════════════════════════════════════════
      CONFIGURACIÓN — ajusta estos valores
   ══════════════════════════════════════════════════════════════ */
-  const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxQ1VA0h2xQEw7bQPsixyHaBtRrxx8cPF8iZsO1Xw3IskAXc8mOsQdL-Decv9gbevi0/exec';
+  const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx5TtxqERkgegqKrL6iNkblZ-nXxrM2kraWBHrcLmzcgPzRKQK20bKCks7JZ8DVGBM/exec';
   // ↑ Reemplaza esta URL con la nueva URL de tu deployment actualizado
 
-  const WHATSAPP_NUM = '522223831878';
+  const WHATSAPP_NUM = '522221234567';
   // ↑ Reemplaza con el número real del barbero (con código de país, sin +)
 
-const HORARIO = {
-  0: null,                    // Domingo   — CERRADO
-  1: { abre: 9, cierra: 20 }, // Lunes     — 9:00 am a 8:00 pm
-  2: { abre: 9, cierra: 20 }, // Martes    — 9:00 am a 8:00 pm
-  3: { abre: 9, cierra: 20 }, // Miércoles — 9:00 am a 8:00 pm
-  4: { abre: 9, cierra: 20 }, // Jueves    — 9:00 am a 8:00 pm
-  5: { abre: 9, cierra: 20 }, // Viernes   — 9:00 am a 8:00 pm
-  6: { abre: 9, cierra: 18 }, // Sábado    — 9:00 am a 6:00 pm
-};
+  // ── HORARIO POR DÍA ──────────────────────────────────────────
+  // Edita estos valores para cambiar el horario de la barbería.
+  // Usa null en ambos campos para marcar un día como CERRADO.
+  // Las horas van en formato de 24 hrs (ej: 9 = 9am, 20 = 8pm).
+  //
+  //   0 = Domingo   1 = Lunes   2 = Martes   3 = Miércoles
+  //   4 = Jueves    5 = Viernes  6 = Sábado
+  //
+  const HORARIO = {
+    0: null,                    // Domingo   — CERRADO
+    1: { abre: 9, cierra: 20 }, // Lunes     — 9:00 am a 8:00 pm
+    2: { abre: 9, cierra: 20 }, // Martes    — 9:00 am a 8:00 pm
+    3: { abre: 9, cierra: 20 }, // Miércoles — 9:00 am a 8:00 pm
+    4: { abre: 9, cierra: 20 }, // Jueves    — 9:00 am a 8:00 pm
+    5: { abre: 9, cierra: 20 }, // Viernes   — 9:00 am a 8:00 pm
+    6: { abre: 9, cierra: 18 }, // Sábado    — 9:00 am a 6:00 pm
+  };
 
   /* ══════════════════════════════════════════════════════════════
      DATOS
@@ -1177,8 +1185,9 @@ const HORARIO = {
   ══════════════════════════════════════════════════════════════ */
   function initFecha() {
     const input = document.getElementById('dateInput');
+
     // Mínimo: hoy
-    const hoy = new Date();
+    const hoy  = new Date();
     const yyyy = hoy.getFullYear();
     const mm   = String(hoy.getMonth() + 1).padStart(2, '0');
     const dd   = String(hoy.getDate()).padStart(2, '0');
@@ -1190,11 +1199,29 @@ const HORARIO = {
     input.max = maxDate.toISOString().split('T')[0];
 
     input.addEventListener('change', () => {
-      estado.fecha = input.value;
+      const fechaStr = input.value;
+      // Usar new Date con hora fija para evitar desfase de zona horaria
+      const [y, m, d] = fechaStr.split('-').map(Number);
+      const diaSemana = new Date(y, m - 1, d).getDay(); // 0=Dom … 6=Sab
+
+      estado.fecha = fechaStr;
       estado.slot  = null;
       actualizarResumen();
       actualizarStepper();
-      cargarDisponibilidad(input.value);
+
+      // Si la barbería está cerrada ese día, mostrar aviso en lugar de slots
+      if (!HORARIO[diaSemana]) {
+        const container = document.getElementById('slotsContainer');
+        const nombres   = ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
+        container.innerHTML = `
+          <div class="slots-empty" style="border-color:#3a2020; color:#e07070;">
+            La barbería está cerrada los <strong>${nombres[diaSemana]}</strong>.<br>
+            Por favor elige otro día.
+          </div>`;
+        return;
+      }
+
+      cargarDisponibilidad(fechaStr);
     });
   }
 
@@ -1211,30 +1238,31 @@ const HORARIO = {
 
     try {
       const url = APPS_SCRIPT_URL + '?fecha=' + fechaStr;
-      const res = await fetch(url, { method: 'GET', mode: 'no-cors' });
+      const res  = await fetch(url);
+      const data = await res.json();
 
-      // no-cors → opaque response. Necesitamos el Apps Script con CORS habilitado.
-      // Si la respuesta llega correcta, usamos el JSON. Si no (opaque), cargamos sin bloqueos.
-      // Para no-cors siempre tenemos respuesta opaque, así que hacemos una segunda llamada
-      // a través de un proxy temporal o directamente.
-      // NOTA: Apps Script en modo "Cualquier persona" SÍ devuelve CORS correcto en GET.
-      // Usamos fetch normal (sin no-cors) para la consulta de disponibilidad.
-      throw new Error('use-cors');
-
-    } catch (_) {
-      // Intento con CORS normal (Apps Script lo soporta en GET con acceso público)
-      try {
-        const url = APPS_SCRIPT_URL + '?fecha=' + fechaStr;
-        const res = await fetch(url);
-        const data = await res.json();
-        estado.ocupados = data.ocupados || [];
-        renderSlots(fechaStr);
-      } catch (err) {
-        // Si falla la red, mostramos todos los slots disponibles
-        console.warn('No se pudo consultar disponibilidad:', err.message);
-        estado.ocupados = [];
-        renderSlots(fechaStr);
+      if (data.error) {
+        // El Apps Script respondió con un error (ej: Calendar ID incorrecto)
+        console.error('Error del Apps Script:', data.error);
+        container.innerHTML = `
+          <div class="slots-empty" style="border-color:#3a2020; color:#e07070;">
+            No se pudo consultar la disponibilidad real.<br>
+            Por favor contáctanos directamente para confirmar tu horario.
+          </div>`;
+        return;
       }
+
+      estado.ocupados = data.ocupados || [];
+      renderSlots(fechaStr);
+
+    } catch (err) {
+      // Falla de red real (sin internet, Apps Script caído, etc.)
+      console.warn('No se pudo consultar disponibilidad:', err.message);
+      container.innerHTML = `
+        <div class="slots-empty" style="border-color:#3a2020; color:#e07070;">
+          No se pudo conectar con el sistema de citas.<br>
+          Por favor contáctanos directamente para confirmar tu horario.
+        </div>`;
     }
   }
 
@@ -1245,7 +1273,21 @@ const HORARIO = {
     const container = document.getElementById('slotsContainer');
     const duracion  = estado.servicio ? estado.servicio.dur : 60;
 
-    // Generar todos los slots cada 30 min de 9:00 a 19:30
+    // Obtener horario del día seleccionado
+    const [y, m, d] = fechaStr.split('-').map(Number);
+    const diaSemana  = new Date(y, m - 1, d).getDay();
+    const horarioDia = HORARIO[diaSemana];
+
+    // Día cerrado (segunda verificación por si acaso)
+    if (!horarioDia) {
+      container.innerHTML = '<div class="slots-empty" style="border-color:#3a2020;color:#e07070;">La barbería está cerrada este día.</div>';
+      return;
+    }
+
+    const HORA_APERTURA = horarioDia.abre;
+    const HORA_CIERRE   = horarioDia.cierra;
+
+    // Generar slots cada 30 min dentro del horario del día
     const slots = [];
     for (let h = HORA_APERTURA; h < HORA_CIERRE; h++) {
       for (let m = 0; m < 60; m += 30) {
