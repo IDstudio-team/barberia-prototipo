@@ -1,0 +1,1529 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Agenda tu cita en Barba Dumas — Barbería de lujo en Puebla." />
+  <meta name="theme-color" content="#0d0d0d" />
+  <title>Agendar Cita · Barba Dumas</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Cinzel:wght@400;600&family=Raleway:wght@300;400;500&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ══════════════════════════════════════════════════
+       TOKENS — mismos que styles.css
+    ══════════════════════════════════════════════════ */
+    :root {
+      --bg-primary:      #0d0d0d;
+      --bg-secondary:    #141414;
+      --bg-accent:       #1a1818;
+      --gold:            #c9a96e;
+      --gold-light:      #e8d5a3;
+      --gold-dark:       #a07840;
+      --text-primary:    #f0ead6;
+      --text-muted:      #7a7060;
+      --border:          #252020;
+      --font-display:    'Playfair Display', Georgia, serif;
+      --font-label:      'Cinzel', serif;
+      --font-body:       'Raleway', sans-serif;
+      --ease:            cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      --transition:      0.4s var(--ease);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      font-family: var(--font-body);
+      font-weight: 300;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    /* ── Scrollbar ─────────────────────────────────── */
+    ::-webkit-scrollbar              { width: 6px; }
+    ::-webkit-scrollbar-track        { background: var(--bg-primary); }
+    ::-webkit-scrollbar-thumb        { background: var(--gold-dark); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover  { background: var(--gold); }
+
+    /* ══════════════════════════════════════════════════
+       HEADER
+    ══════════════════════════════════════════════════ */
+    .bk-header {
+      padding: 1.6rem 5%;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      background: rgba(13,13,13,0.92);
+      backdrop-filter: blur(12px);
+      z-index: 100;
+    }
+
+    .bk-logo {
+      font-family: var(--font-display);
+      font-size: 1.35rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      color: var(--text-primary);
+    }
+    .bk-logo span { color: var(--gold); }
+
+    .bk-back {
+      font-family: var(--font-label);
+      font-size: 0.52rem;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      transition: color var(--transition);
+    }
+    .bk-back:hover { color: var(--gold); }
+    .bk-back svg { width: 14px; height: 14px; }
+
+    /* ══════════════════════════════════════════════════
+       HERO STRIP
+    ══════════════════════════════════════════════════ */
+    .bk-hero {
+      padding: 5rem 5% 3.5rem;
+      text-align: center;
+      border-bottom: 1px solid var(--border);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .bk-hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 60% 80% at 50% 0%, rgba(201,169,110,0.07) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .bk-eyebrow {
+      font-family: var(--font-label);
+      font-size: 0.52rem;
+      letter-spacing: 0.38em;
+      text-transform: uppercase;
+      color: var(--gold);
+      display: block;
+      margin-bottom: 1.2rem;
+    }
+
+    .bk-title {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 5vw, 3.4rem);
+      font-weight: 700;
+      line-height: 1.15;
+      color: var(--text-primary);
+    }
+    .bk-title em {
+      font-style: italic;
+      color: var(--gold);
+    }
+
+    .bk-ornament {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      margin: 1.8rem auto;
+      width: 220px;
+    }
+    .bk-ornament::before,
+    .bk-ornament::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--gold-dark));
+    }
+    .bk-ornament::after {
+      background: linear-gradient(90deg, var(--gold-dark), transparent);
+    }
+    .bk-ornament-diamond {
+      width: 6px; height: 6px;
+      background: var(--gold);
+      transform: rotate(45deg);
+      flex-shrink: 0;
+    }
+
+    .bk-subtitle {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      max-width: 440px;
+      margin: 0 auto;
+      line-height: 1.8;
+    }
+
+    /* ══════════════════════════════════════════════════
+       STEPPER
+    ══════════════════════════════════════════════════ */
+    .bk-stepper {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 0;
+      padding: 2.4rem 5%;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .step {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .step-num {
+      width: 32px; height: 32px;
+      border: 1px solid var(--border);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-label);
+      font-size: 0.55rem;
+      color: var(--text-muted);
+      transition: all var(--transition);
+      flex-shrink: 0;
+    }
+
+    .step-label {
+      font-family: var(--font-label);
+      font-size: 0.48rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      transition: color var(--transition);
+      white-space: nowrap;
+    }
+
+    .step-line {
+      width: 40px;
+      height: 1px;
+      background: var(--border);
+      margin: 0 0.5rem;
+      flex-shrink: 0;
+    }
+
+    /* Estados del stepper */
+    .step.active .step-num {
+      border-color: var(--gold);
+      background: var(--gold);
+      color: var(--bg-primary);
+    }
+    .step.active .step-label { color: var(--gold); }
+
+    .step.done .step-num {
+      border-color: var(--gold-dark);
+      color: var(--gold);
+    }
+    .step.done .step-label { color: var(--text-muted); }
+
+    /* ══════════════════════════════════════════════════
+       LAYOUT PRINCIPAL
+    ══════════════════════════════════════════════════ */
+    .bk-main {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 1fr 380px;
+      gap: 0;
+      max-width: 1100px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .bk-form-area {
+      padding: 4rem 3.5rem 4rem 5%;
+      border-right: 1px solid var(--border);
+    }
+
+    .bk-summary-area {
+      padding: 4rem 5% 4rem 3rem;
+      position: sticky;
+      top: 80px;
+      align-self: start;
+    }
+
+    /* ══════════════════════════════════════════════════
+       SECCIONES DEL FORMULARIO
+    ══════════════════════════════════════════════════ */
+    .bk-section {
+      margin-bottom: 3rem;
+    }
+
+    .bk-section-title {
+      font-family: var(--font-label);
+      font-size: 0.54rem;
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1.6rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .bk-section-title::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* ── Selección de servicio ─────────────────────── */
+    .service-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.75rem;
+    }
+
+    .service-card {
+      border: 1px solid var(--border);
+      padding: 1.3rem 1.2rem;
+      cursor: pointer;
+      transition: all var(--transition);
+      position: relative;
+      background: transparent;
+    }
+    .service-card:hover {
+      border-color: var(--gold-dark);
+    }
+    .service-card.selected {
+      border-color: var(--gold);
+      background: rgba(201,169,110,0.05);
+    }
+    .service-card.selected::before {
+      content: '✦';
+      position: absolute;
+      top: 0.6rem;
+      right: 0.7rem;
+      font-size: 0.55rem;
+      color: var(--gold);
+    }
+
+    .service-name {
+      font-family: var(--font-display);
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 0.4rem;
+    }
+    .service-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 0.6rem;
+    }
+    .service-price {
+      font-family: var(--font-label);
+      font-size: 0.52rem;
+      color: var(--gold);
+      letter-spacing: 0.12em;
+    }
+    .service-dur {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+    }
+
+    /* ── Selección de barbero ──────────────────────── */
+    .barber-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.75rem;
+    }
+
+    .barber-card {
+      border: 1px solid var(--border);
+      padding: 1.2rem 0.8rem;
+      cursor: pointer;
+      text-align: center;
+      transition: all var(--transition);
+      background: transparent;
+    }
+    .barber-card:hover { border-color: var(--gold-dark); }
+    .barber-card.selected {
+      border-color: var(--gold);
+      background: rgba(201,169,110,0.05);
+    }
+
+    .barber-avatar {
+      width: 44px; height: 44px;
+      border: 1px solid var(--border);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 0.75rem;
+      font-family: var(--font-label);
+      font-size: 0.65rem;
+      color: var(--text-muted);
+      transition: all var(--transition);
+    }
+    .barber-card.selected .barber-avatar {
+      border-color: var(--gold);
+      color: var(--gold);
+    }
+
+    .barber-name {
+      font-family: var(--font-label);
+      font-size: 0.48rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+    .barber-card.selected .barber-name { color: var(--gold); }
+
+    /* ── Selector de fecha ─────────────────────────── */
+    .date-picker-wrap {
+      position: relative;
+    }
+
+    .date-input {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      color: var(--text-primary);
+      padding: 14px 18px;
+      font-family: var(--font-body);
+      font-size: 0.88rem;
+      font-weight: 300;
+      outline: none;
+      transition: border-color var(--transition);
+      width: 100%;
+      -webkit-appearance: none;
+      border-radius: 0;
+      color-scheme: dark;
+    }
+    .date-input:focus { border-color: var(--gold-dark); }
+    .date-input::-webkit-calendar-picker-indicator {
+      filter: invert(0.6) sepia(1) saturate(0.5) hue-rotate(0deg);
+      cursor: pointer;
+    }
+
+    /* ── Grid de slots ─────────────────────────────── */
+    .slots-container {
+      margin-top: 1.2rem;
+    }
+
+    .slots-loading {
+      text-align: center;
+      padding: 2rem;
+      color: var(--text-muted);
+      font-size: 0.8rem;
+    }
+    .slots-loading .spinner {
+      width: 22px; height: 22px;
+      border: 2px solid var(--border);
+      border-top-color: var(--gold);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin: 0 auto 0.8rem;
+    }
+
+    .slots-empty {
+      text-align: center;
+      padding: 2rem;
+      color: var(--text-muted);
+      font-size: 0.8rem;
+      border: 1px solid var(--border);
+    }
+
+    .slots-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.55rem;
+    }
+
+    .slot {
+      border: 1px solid var(--border);
+      padding: 0.7rem 0.4rem;
+      text-align: center;
+      font-family: var(--font-label);
+      font-size: 0.52rem;
+      letter-spacing: 0.12em;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all var(--transition);
+      user-select: none;
+    }
+    .slot:hover:not(.slot-taken):not(.slot-past) {
+      border-color: var(--gold-dark);
+      color: var(--text-primary);
+    }
+    .slot.slot-selected {
+      border-color: var(--gold);
+      background: rgba(201,169,110,0.08);
+      color: var(--gold);
+    }
+    .slot.slot-taken {
+      border-color: transparent;
+      background: rgba(255,255,255,0.02);
+      color: var(--border);
+      cursor: not-allowed;
+      text-decoration: line-through;
+    }
+    .slot.slot-past {
+      border-color: transparent;
+      color: rgba(122,112,96,0.3);
+      cursor: not-allowed;
+    }
+
+    .slots-legend {
+      display: flex;
+      gap: 1.5rem;
+      margin-top: 1rem;
+    }
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: var(--font-label);
+      font-size: 0.44rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+    .legend-dot {
+      width: 10px; height: 10px;
+      border: 1px solid;
+    }
+    .legend-dot.avail { border-color: var(--border); background: transparent; }
+    .legend-dot.taken { background: rgba(255,255,255,0.02); border-color: transparent; }
+    .legend-dot.sel   { border-color: var(--gold); background: rgba(201,169,110,0.08); }
+
+    /* ── Datos del cliente ─────────────────────────── */
+    .client-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.2rem;
+    }
+
+    .field-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.55rem;
+    }
+    .field-group.full { grid-column: 1 / -1; }
+
+    .field-label {
+      font-family: var(--font-label);
+      font-size: 0.5rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+
+    .field-input {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      color: var(--text-primary);
+      padding: 13px 16px;
+      font-family: var(--font-body);
+      font-size: 0.88rem;
+      font-weight: 300;
+      outline: none;
+      transition: border-color var(--transition);
+      width: 100%;
+      border-radius: 0;
+      -webkit-appearance: none;
+    }
+    .field-input::placeholder { color: var(--text-muted); opacity: 0.6; }
+    .field-input:focus { border-color: var(--gold-dark); }
+
+    /* ── Botón principal ───────────────────────────── */
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.8rem;
+      font-family: var(--font-label);
+      font-size: 0.56rem;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      padding: 16px 36px;
+      background: var(--gold);
+      color: var(--bg-primary);
+      border: none;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      transition: all var(--transition);
+      width: 100%;
+      justify-content: center;
+      margin-top: 0.5rem;
+    }
+    .btn-primary::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--gold-light);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform var(--transition);
+    }
+    .btn-primary:hover::before { transform: scaleX(1); }
+    .btn-primary span { position: relative; z-index: 1; }
+    .btn-primary:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+    }
+    .btn-primary:disabled::before { display: none; }
+
+    /* ── Mensaje de estado ─────────────────────────── */
+    .bk-msg {
+      margin-top: 1.2rem;
+      padding: 1rem 1.2rem;
+      font-family: var(--font-label);
+      font-size: 0.5rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      display: none;
+      border: 1px solid;
+    }
+    .bk-msg.success {
+      display: block;
+      border-color: var(--gold-dark);
+      color: var(--gold);
+      background: rgba(201,169,110,0.06);
+    }
+    .bk-msg.error {
+      display: block;
+      border-color: #5a2020;
+      color: #e07070;
+      background: rgba(90,32,32,0.15);
+    }
+
+    /* ══════════════════════════════════════════════════
+       RESUMEN (panel derecho)
+    ══════════════════════════════════════════════════ */
+    .summary-label {
+      font-family: var(--font-label);
+      font-size: 0.5rem;
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 2rem;
+    }
+
+    .summary-logo {
+      font-family: var(--font-display);
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 2rem;
+    }
+    .summary-logo span { color: var(--gold); }
+
+    .summary-rows {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      border: 1px solid var(--border);
+      margin-bottom: 2rem;
+    }
+
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      padding: 1rem 1.2rem;
+      border-bottom: 1px solid var(--border);
+      gap: 1rem;
+    }
+    .summary-row:last-child { border-bottom: none; }
+
+    .summary-row-key {
+      font-family: var(--font-label);
+      font-size: 0.46rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      flex-shrink: 0;
+    }
+
+    .summary-row-val {
+      font-size: 0.82rem;
+      color: var(--text-primary);
+      text-align: right;
+      line-height: 1.4;
+    }
+    .summary-row-val.gold { color: var(--gold); }
+    .summary-row-val.empty {
+      color: var(--border);
+      font-style: italic;
+      font-size: 0.75rem;
+    }
+
+    .summary-note {
+      font-family: var(--font-label);
+      font-size: 0.46rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      line-height: 2;
+      border-top: 1px solid var(--border);
+      padding-top: 1.5rem;
+      margin-top: 0.5rem;
+    }
+
+    /* ══════════════════════════════════════════════════
+       PANTALLA DE ÉXITO
+    ══════════════════════════════════════════════════ */
+    #successScreen {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 6rem 5%;
+      min-height: 60vh;
+      flex: 1;
+    }
+
+    .success-icon {
+      width: 72px; height: 72px;
+      border: 1px solid var(--gold);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 2.5rem;
+      font-size: 1.6rem;
+    }
+
+    .success-title {
+      font-family: var(--font-display);
+      font-size: clamp(1.6rem, 4vw, 2.6rem);
+      font-weight: 700;
+      margin-bottom: 1rem;
+    }
+    .success-title em { color: var(--gold); font-style: italic; }
+
+    .success-detail {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      max-width: 420px;
+      line-height: 1.8;
+      margin-bottom: 2.5rem;
+    }
+
+    #successDetails {
+      border: 1px solid var(--border);
+      padding: 1.5rem 2rem;
+      margin-bottom: 2.5rem;
+      max-width: 400px;
+      width: 100%;
+      text-align: left;
+    }
+
+    .success-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.6rem 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.82rem;
+      gap: 1rem;
+    }
+    .success-row:last-child { border-bottom: none; }
+    .success-row-key {
+      font-family: var(--font-label);
+      font-size: 0.44rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      flex-shrink: 0;
+    }
+    .success-row-val { color: var(--gold); text-align: right; line-height: 1.4; }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-family: var(--font-label);
+      font-size: 0.52rem;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      padding: 13px 30px;
+      border: 1px solid var(--gold);
+      color: var(--gold);
+      cursor: pointer;
+      background: transparent;
+      transition: all var(--transition);
+      text-decoration: none;
+    }
+    .btn-secondary:hover {
+      background: var(--gold);
+      color: var(--bg-primary);
+    }
+
+    /* ══════════════════════════════════════════════════
+       FOOTER
+    ══════════════════════════════════════════════════ */
+    .bk-footer {
+      padding: 1.8rem 5%;
+      border-top: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .bk-footer p {
+      font-family: var(--font-label);
+      font-size: 0.46rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      opacity: 0.6;
+    }
+    .bk-footer a {
+      color: var(--text-muted);
+      transition: color var(--transition);
+      opacity: 0.6;
+    }
+    .bk-footer a:hover { color: var(--gold); opacity: 1; }
+
+    /* ══════════════════════════════════════════════════
+       SPINNER / ANIMACIONES
+    ══════════════════════════════════════════════════ */
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .fade-in { animation: fadeIn 0.5s var(--ease) forwards; }
+
+    /* ══════════════════════════════════════════════════
+       RESPONSIVE
+    ══════════════════════════════════════════════════ */
+    @media (max-width: 900px) {
+      .bk-main {
+        grid-template-columns: 1fr;
+      }
+      .bk-form-area {
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+        padding: 3rem 5%;
+      }
+      .bk-summary-area {
+        padding: 2.5rem 5%;
+        position: static;
+      }
+      .barber-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 600px) {
+      .bk-stepper {
+        gap: 0;
+        padding: 1.5rem 3%;
+      }
+      .step-label { display: none; }
+      .step-line  { width: 24px; }
+
+      .service-grid {
+        grid-template-columns: 1fr;
+      }
+      .slots-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+      .client-grid {
+        grid-template-columns: 1fr;
+      }
+      .field-group.full { grid-column: 1; }
+      .bk-hero { padding: 3rem 5% 2rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ═══════════════════════════════════════════════
+       HEADER
+  ═══════════════════════════════════════════════ -->
+  <header class="bk-header">
+    <a href="index.html" class="bk-logo" aria-label="Volver a Barba Dumas">
+      Barba <span>Dumas</span>
+    </a>
+    <a href="index.html" class="bk-back" aria-label="Regresar al sitio principal">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M19 12H5M12 5l-7 7 7 7" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      Regresar
+    </a>
+  </header>
+
+  <!-- ═══════════════════════════════════════════════
+       HERO STRIP
+  ═══════════════════════════════════════════════ -->
+  <div class="bk-hero">
+    <span class="bk-eyebrow">Puebla, México &middot; Desde 2010</span>
+    <h1 class="bk-title">Agenda tu <em>Cita</em></h1>
+    <div class="bk-ornament"><div class="bk-ornament-diamond"></div></div>
+    <p class="bk-subtitle">
+      Selecciona tu servicio, elige tu barbero y el horario que prefieras. Confirmación inmediata.
+    </p>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════
+       STEPPER
+  ═══════════════════════════════════════════════ -->
+  <div class="bk-stepper" role="list" aria-label="Pasos para agendar">
+    <div class="step active" id="step1" role="listitem" aria-current="step">
+      <div class="step-num">1</div>
+      <span class="step-label">Servicio</span>
+    </div>
+    <div class="step-line"></div>
+    <div class="step" id="step2" role="listitem">
+      <div class="step-num">2</div>
+      <span class="step-label">Fecha &amp; Hora</span>
+    </div>
+    <div class="step-line"></div>
+    <div class="step" id="step3" role="listitem">
+      <div class="step-num">3</div>
+      <span class="step-label">Tus Datos</span>
+    </div>
+    <div class="step-line"></div>
+    <div class="step" id="step4" role="listitem">
+      <div class="step-num">4</div>
+      <span class="step-label">Confirmar</span>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════
+       CONTENIDO PRINCIPAL (formulario + resumen)
+  ═══════════════════════════════════════════════ -->
+  <div class="bk-main" id="mainContent">
+
+    <!-- ── Área de formulario ── -->
+    <div class="bk-form-area">
+
+      <!-- PASO 1: Servicio -->
+      <div class="bk-section" id="secServicio">
+        <div class="bk-section-title">01 &nbsp; Selecciona un servicio</div>
+        <div class="service-grid" id="serviceGrid" role="radiogroup" aria-label="Servicios disponibles">
+          <!-- Generado por JS -->
+        </div>
+      </div>
+
+      <!-- PASO 1b: Barbero -->
+      <div class="bk-section" id="secBarbero">
+        <div class="bk-section-title">02 &nbsp; Elige tu barbero</div>
+        <div class="barber-grid" id="barberGrid" role="radiogroup" aria-label="Barberos disponibles">
+          <!-- Generado por JS -->
+        </div>
+      </div>
+
+      <!-- PASO 2: Fecha y slots -->
+      <div class="bk-section" id="secFecha">
+        <div class="bk-section-title">03 &nbsp; Selecciona fecha y horario</div>
+        <input
+          type="date"
+          id="dateInput"
+          class="date-input"
+          aria-label="Selecciona una fecha"
+        />
+        <div class="slots-container" id="slotsContainer">
+          <div class="slots-empty">
+            Selecciona una fecha para ver los horarios disponibles
+          </div>
+        </div>
+      </div>
+
+      <!-- PASO 3: Datos del cliente -->
+      <div class="bk-section" id="secCliente">
+        <div class="bk-section-title">04 &nbsp; Tus datos</div>
+        <div class="client-grid">
+          <div class="field-group">
+            <label class="field-label" for="clientNombre">Nombre completo *</label>
+            <input type="text" id="clientNombre" class="field-input"
+                   placeholder="Tu nombre" autocomplete="name" required />
+          </div>
+          <div class="field-group">
+            <label class="field-label" for="clientTelefono">Teléfono</label>
+            <input type="tel" id="clientTelefono" class="field-input"
+                   placeholder="+52 222 000 0000" autocomplete="tel" />
+          </div>
+        </div>
+      </div>
+
+      <!-- BOTÓN CONFIRMAR -->
+      <button class="btn-primary" id="confirmBtn" disabled aria-label="Confirmar cita">
+        <span>Confirmar Cita</span>
+      </button>
+
+      <div class="bk-msg" id="bkMsg" role="alert" aria-live="polite"></div>
+
+    </div>
+
+    <!-- ── Panel de resumen ── -->
+    <aside class="bk-summary-area" aria-label="Resumen de tu cita">
+      <div class="summary-label">Tu selección</div>
+
+      <div class="summary-logo">Barba <span>Dumas</span></div>
+
+      <div class="summary-rows">
+        <div class="summary-row">
+          <span class="summary-row-key">Servicio</span>
+          <span class="summary-row-val empty" id="sumServicio">—</span>
+        </div>
+        <div class="summary-row">
+          <span class="summary-row-key">Barbero</span>
+          <span class="summary-row-val empty" id="sumBarbero">—</span>
+        </div>
+        <div class="summary-row">
+          <span class="summary-row-key">Fecha</span>
+          <span class="summary-row-val empty" id="sumFecha">—</span>
+        </div>
+        <div class="summary-row">
+          <span class="summary-row-key">Hora</span>
+          <span class="summary-row-val empty" id="sumHora">—</span>
+        </div>
+        <div class="summary-row">
+          <span class="summary-row-key">Duración</span>
+          <span class="summary-row-val empty" id="sumDuracion">—</span>
+        </div>
+        <div class="summary-row">
+          <span class="summary-row-key">Precio</span>
+          <span class="summary-row-val gold empty" id="sumPrecio">—</span>
+        </div>
+      </div>
+
+      <div class="summary-note">
+        Lunes a Sábado<br>
+        9:00 am – 8:00 pm<br><br>
+        Calle 5 de Mayo 110<br>
+        Centro Histórico, Puebla
+      </div>
+    </aside>
+
+  </div>
+
+  <!-- ═══════════════════════════════════════════════
+       PANTALLA DE ÉXITO
+  ═══════════════════════════════════════════════ -->
+  <div id="successScreen" role="main" aria-live="polite">
+    <div class="success-icon" aria-hidden="true">💈</div>
+    <h2 class="success-title">¡Cita <em>Confirmada</em>!</h2>
+    <p class="success-detail">
+      Tu cita ha sido registrada. Te esperamos en Barba Dumas, el lugar donde el estilo es una tradición.
+    </p>
+    <div id="successDetails"></div>
+    <a href="index.html" class="btn-secondary">
+      ← Volver al inicio
+    </a>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════
+       FOOTER
+  ═══════════════════════════════════════════════ -->
+  <footer class="bk-footer">
+    <p>© 2024 Barba Dumas · Todos los derechos reservados</p>
+    <a href="index.html">barbadumas.mx</a>
+  </footer>
+
+  <script>
+  /* ══════════════════════════════════════════════════════════════
+     CONFIGURACIÓN — ajusta estos valores
+  ══════════════════════════════════════════════════════════════ */
+  const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx5TtxqERkgegqKrL6iNkblZ-nXxrM2kraWBHrcLmzcgPzRKQK20bKCks7JZ8DVGBM/exec';
+  // ↑ Reemplaza esta URL con la nueva URL de tu deployment actualizado
+
+  const WHATSAPP_NUM = '522221234567';
+  // ↑ Reemplaza con el número real del barbero (con código de país, sin +)
+
+  const HORA_APERTURA = 9;   // 9:00 am
+  const HORA_CIERRE   = 20;  // 8:00 pm
+
+  /* ══════════════════════════════════════════════════════════════
+     DATOS
+  ══════════════════════════════════════════════════════════════ */
+  const SERVICIOS = [
+    { id: 'corte',       nombre: 'Corte Clásico',         precio: '$150', dur: 60 },
+    { id: 'barba',       nombre: 'Arreglo de Barba',       precio: '$120', dur: 45 },
+    { id: 'cortebarba',  nombre: 'Corte + Barba',          precio: '$250', dur: 90 },
+    { id: 'tinte',       nombre: 'Tinte / Color',          precio: '$200', dur: 75 },
+    { id: 'afeitado',    nombre: 'Afeitado con Navaja',    precio: '$180', dur: 50 },
+    { id: 'tratamiento', nombre: 'Tratamiento Capilar',    precio: '$220', dur: 60 },
+  ];
+
+  const BARBEROS = [
+    { id: 'sin',       nombre: 'Sin\nPreferencia', initials: '?' },
+    { id: 'alejandro', nombre: 'Alejandro\nDumas',  initials: 'AD' },
+    { id: 'rafael',    nombre: 'Rafael\nMontoya',   initials: 'RM' },
+    { id: 'carlos',    nombre: 'Carlos\nHerrera',   initials: 'CH' },
+  ];
+
+  /* ══════════════════════════════════════════════════════════════
+     ESTADO
+  ══════════════════════════════════════════════════════════════ */
+  let estado = {
+    servicio:  null,  // objeto SERVICIOS
+    barbero:   null,  // objeto BARBEROS
+    fecha:     null,  // string YYYY-MM-DD
+    slot:      null,  // string "HH:MM"
+    ocupados:  [],    // array de { inicio, fin } ISO strings
+  };
+
+  /* ══════════════════════════════════════════════════════════════
+     INICIALIZACIÓN
+  ══════════════════════════════════════════════════════════════ */
+  document.addEventListener('DOMContentLoaded', () => {
+    renderServicios();
+    renderBarberos();
+    initFecha();
+    document.getElementById('confirmBtn').addEventListener('click', confirmarCita);
+    ['clientNombre','clientTelefono'].forEach(id => {
+      document.getElementById(id).addEventListener('input', actualizarBoton);
+    });
+  });
+
+  /* ══════════════════════════════════════════════════════════════
+     RENDER: SERVICIOS
+  ══════════════════════════════════════════════════════════════ */
+  function renderServicios() {
+    const grid = document.getElementById('serviceGrid');
+    grid.innerHTML = '';
+    SERVICIOS.forEach(s => {
+      const card = document.createElement('div');
+      card.className = 'service-card';
+      card.setAttribute('role', 'radio');
+      card.setAttribute('aria-checked', 'false');
+      card.setAttribute('tabindex', '0');
+      card.innerHTML = `
+        <div class="service-name">${s.nombre}</div>
+        <div class="service-meta">
+          <span class="service-price">${s.precio}</span>
+          <span class="service-dur">${s.dur} min</span>
+        </div>
+      `;
+      card.addEventListener('click',   () => seleccionarServicio(s, card));
+      card.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') seleccionarServicio(s, card); });
+      grid.appendChild(card);
+    });
+  }
+
+  function seleccionarServicio(s, card) {
+    document.querySelectorAll('.service-card').forEach(c => {
+      c.classList.remove('selected');
+      c.setAttribute('aria-checked', 'false');
+    });
+    card.classList.add('selected');
+    card.setAttribute('aria-checked', 'true');
+    estado.servicio = s;
+    actualizarResumen();
+    actualizarStepper();
+    actualizarBoton();
+  }
+
+  /* ══════════════════════════════════════════════════════════════
+     RENDER: BARBEROS
+  ══════════════════════════════════════════════════════════════ */
+  function renderBarberos() {
+    const grid = document.getElementById('barberGrid');
+    grid.innerHTML = '';
+    BARBEROS.forEach(b => {
+      const card = document.createElement('div');
+      card.className = 'barber-card';
+      card.setAttribute('role', 'radio');
+      card.setAttribute('aria-checked', 'false');
+      card.setAttribute('tabindex', '0');
+      card.innerHTML = `
+        <div class="barber-avatar">${b.initials}</div>
+        <div class="barber-name">${b.nombre.replace('\n', '<br>')}</div>
+      `;
+      card.addEventListener('click',   () => seleccionarBarbero(b, card));
+      card.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') seleccionarBarbero(b, card); });
+      grid.appendChild(card);
+    });
+    // Seleccionar "Sin preferencia" por defecto
+    const primera = grid.querySelector('.barber-card');
+    if (primera) seleccionarBarbero(BARBEROS[0], primera);
+  }
+
+  function seleccionarBarbero(b, card) {
+    document.querySelectorAll('.barber-card').forEach(c => {
+      c.classList.remove('selected');
+      c.setAttribute('aria-checked', 'false');
+    });
+    card.classList.add('selected');
+    card.setAttribute('aria-checked', 'true');
+    estado.barbero = b;
+    actualizarResumen();
+    actualizarBoton();
+  }
+
+  /* ══════════════════════════════════════════════════════════════
+     FECHA
+  ══════════════════════════════════════════════════════════════ */
+  function initFecha() {
+    const input = document.getElementById('dateInput');
+    // Mínimo: hoy
+    const hoy = new Date();
+    const yyyy = hoy.getFullYear();
+    const mm   = String(hoy.getMonth() + 1).padStart(2, '0');
+    const dd   = String(hoy.getDate()).padStart(2, '0');
+    input.min = `${yyyy}-${mm}-${dd}`;
+
+    // Máximo: 3 meses adelante
+    const maxDate = new Date(hoy);
+    maxDate.setMonth(maxDate.getMonth() + 3);
+    input.max = maxDate.toISOString().split('T')[0];
+
+    input.addEventListener('change', () => {
+      estado.fecha = input.value;
+      estado.slot  = null;
+      actualizarResumen();
+      actualizarStepper();
+      cargarDisponibilidad(input.value);
+    });
+  }
+
+  /* ══════════════════════════════════════════════════════════════
+     DISPONIBILIDAD — CONSULTA APPS SCRIPT
+  ══════════════════════════════════════════════════════════════ */
+  async function cargarDisponibilidad(fechaStr) {
+    const container = document.getElementById('slotsContainer');
+    container.innerHTML = `
+      <div class="slots-loading">
+        <div class="spinner"></div>
+        Consultando disponibilidad…
+      </div>`;
+
+    try {
+      const url = APPS_SCRIPT_URL + '?fecha=' + fechaStr;
+      const res = await fetch(url, { method: 'GET', mode: 'no-cors' });
+
+      // no-cors → opaque response. Necesitamos el Apps Script con CORS habilitado.
+      // Si la respuesta llega correcta, usamos el JSON. Si no (opaque), cargamos sin bloqueos.
+      // Para no-cors siempre tenemos respuesta opaque, así que hacemos una segunda llamada
+      // a través de un proxy temporal o directamente.
+      // NOTA: Apps Script en modo "Cualquier persona" SÍ devuelve CORS correcto en GET.
+      // Usamos fetch normal (sin no-cors) para la consulta de disponibilidad.
+      throw new Error('use-cors');
+
+    } catch (_) {
+      // Intento con CORS normal (Apps Script lo soporta en GET con acceso público)
+      try {
+        const url = APPS_SCRIPT_URL + '?fecha=' + fechaStr;
+        const res = await fetch(url);
+        const data = await res.json();
+        estado.ocupados = data.ocupados || [];
+        renderSlots(fechaStr);
+      } catch (err) {
+        // Si falla la red, mostramos todos los slots disponibles
+        console.warn('No se pudo consultar disponibilidad:', err.message);
+        estado.ocupados = [];
+        renderSlots(fechaStr);
+      }
+    }
+  }
+
+  /* ══════════════════════════════════════════════════════════════
+     RENDER: SLOTS
+  ══════════════════════════════════════════════════════════════ */
+  function renderSlots(fechaStr) {
+    const container = document.getElementById('slotsContainer');
+    const duracion  = estado.servicio ? estado.servicio.dur : 60;
+
+    // Generar todos los slots cada 30 min de 9:00 a 19:30
+    const slots = [];
+    for (let h = HORA_APERTURA; h < HORA_CIERRE; h++) {
+      for (let m = 0; m < 60; m += 30) {
+        // El último slot debe terminar antes del cierre
+        const finMinutos = h * 60 + m + duracion;
+        if (finMinutos > HORA_CIERRE * 60) continue;
+        const hStr = String(h).padStart(2, '0');
+        const mStr = String(m).padStart(2, '0');
+        slots.push(`${hStr}:${mStr}`);
+      }
+    }
+
+    if (slots.length === 0) {
+      container.innerHTML = '<div class="slots-empty">No hay horarios disponibles para esta fecha.</div>';
+      return;
+    }
+
+    const ahora = new Date();
+    const eHoy  = fechaStr === ahora.toISOString().split('T')[0];
+
+    let html = '<div class="slots-grid fade-in" role="radiogroup" aria-label="Horarios disponibles">';
+
+    slots.forEach(slot => {
+      const [hh, mm] = slot.split(':').map(Number);
+
+      // ¿Es pasado?
+      let esPasado = false;
+      if (eHoy) {
+        const slotDate = new Date();
+        slotDate.setHours(hh, mm, 0, 0);
+        esPasado = slotDate <= ahora;
+      }
+
+      // ¿Está ocupado?
+      const slotInicio = new Date(`${fechaStr}T${slot}:00`);
+      const slotFin    = new Date(slotInicio.getTime() + duracion * 60000);
+
+      const estaOcupado = estado.ocupados.some(ev => {
+        const evInicio = new Date(ev.inicio);
+        const evFin    = new Date(ev.fin);
+        // Overlap: el slot empieza antes de que termine el evento Y termina después de que empiece
+        return slotInicio < evFin && slotFin > evInicio;
+      });
+
+      let cls = 'slot';
+      let label = slot;
+      if (esPasado) {
+        cls += ' slot-past';
+        label = slot;
+      } else if (estaOcupado) {
+        cls += ' slot-taken';
+        label = slot;
+      }
+
+      html += `
+        <div class="${cls}"
+             role="radio"
+             aria-checked="false"
+             aria-disabled="${esPasado || estaOcupado}"
+             tabindex="${esPasado || estaOcupado ? -1 : 0}"
+             data-slot="${slot}"
+             aria-label="${slot} ${estaOcupado ? '(ocupado)' : esPasado ? '(pasado)' : ''}">
+          ${label}
+        </div>`;
+    });
+
+    html += '</div>';
+    html += `
+      <div class="slots-legend">
+        <div class="legend-item"><div class="legend-dot avail"></div> Disponible</div>
+        <div class="legend-item"><div class="legend-dot taken"></div> Ocupado</div>
+        <div class="legend-item"><div class="legend-dot sel"></div> Tu selección</div>
+      </div>`;
+
+    container.innerHTML = html;
+
+    // Eventos de click en slots disponibles
+    container.querySelectorAll('.slot:not(.slot-taken):not(.slot-past)').forEach(el => {
+      el.addEventListener('click',   () => seleccionarSlot(el.dataset.slot, el));
+      el.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') seleccionarSlot(el.dataset.slot, el);
+      });
+    });
+  }
+
+  function seleccionarSlot(slot, el) {
+    document.querySelectorAll('.slot').forEach(s => {
+      s.classList.remove('slot-selected');
+      s.setAttribute('aria-checked', 'false');
+    });
+    el.classList.add('slot-selected');
+    el.setAttribute('aria-checked', 'true');
+    estado.slot = slot;
+    actualizarResumen();
+    actualizarStepper();
+    actualizarBoton();
+  }
+
+  /* ══════════════════════════════════════════════════════════════
+     RESUMEN (panel derecho)
+  ══════════════════════════════════════════════════════════════ */
+  function actualizarResumen() {
+    const setVal = (id, val, esVacio = false) => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      el.textContent = val;
+      el.classList.toggle('empty', esVacio);
+      el.classList.toggle('gold',  !esVacio && id === 'sumPrecio');
+    };
+
+    setVal('sumServicio', estado.servicio ? estado.servicio.nombre : '—', !estado.servicio);
+    setVal('sumBarbero',  estado.barbero
+      ? (estado.barbero.id === 'sin' ? 'Sin preferencia' : estado.barbero.nombre.replace('\n', ' '))
+      : '—', !estado.barbero);
+    setVal('sumFecha', estado.fecha
+      ? formatearFecha(estado.fecha)
+      : '—', !estado.fecha);
+    setVal('sumHora',     estado.slot   ? estado.slot : '—', !estado.slot);
+    setVal('sumDuracion', estado.servicio ? estado.servicio.dur + ' min' : '—', !estado.servicio);
+    setVal('sumPrecio',   estado.servicio ? estado.servicio.precio : '—', !estado.servicio);
+  }
+
+  /* ══════════════════════════════════════════════════════════════
+     STEPPER
+  ══════════════════════════════════════════════════════════════ */
+  function actualizarStepper() {
+    const pasos = [
+      { id: 'step1', ok: !!estado.servicio },
+      { id: 'step2', ok: !!estado.fecha && !!estado.slot },
+      { id: 'step3', ok: false }, // se activa al escribir el nombre
+      { id: 'step4', ok: false },
+    ];
+
+    // Determinar paso actual
+    let actual = 0;
+    if (!estado.servicio)             actual = 0;
+    else if (!estado.fecha || !estado.slot) actual = 1;
+    else                              actual = 2;
+
+    pasos.forEach((p, i) => {
+      const el = document.getElementById(p.id);
+      if (!el) return;
+      el.classList.remove('active', 'done');
+      if (i < actual)      el.classList.add('done');
+      else if (i === actual) el.classList.add('active');
+    });
+  }
+
+  /* ══════════════════════════════════════════════════════════════
+     BOTÓN CONFIRMAR
+  ══════════════════════════════════════════════════════════════ */
+  function actualizarBoton() {
+    const nombre = document.getElementById('clientNombre').value.trim();
+    const listo  = !!estado.servicio && !!estado.slot && !!estado.fecha && nombre.length > 1;
+    document.getElementById('confirmBtn').disabled = !listo;
+
+    // Actualizar stepper paso 3
+    const step3 = document.getElementById('step3');
+    if (step3) {
+      step3.classList.remove('active', 'done');
+      if (listo) {
+        step3.classList.add('done');
+        const step4 = document.getElementById('step4');
+        if (step4) { step4.classList.remove('done'); step4.classList.add('active'); }
+      } else if (estado.fecha && estado.slot) {
+        step3.classList.add('active');
+      }
+    }
+  }
+
+  /* ══════════════════════════════════════════════════════════════
+     CONFIRMAR CITA
+  ══════════════════════════════════════════════════════════════ */
+  async function confirmarCita() {
+    const nombre    = document.getElementById('clientNombre').value.trim();
+    const telefono  = document.getElementById('clientTelefono').value.trim();
+
+    if (!nombre) {
+      mostrarMsg('Por favor ingresa tu nombre completo.', 'error');
+      document.getElementById('clientNombre').focus();
+      return;
+    }
+    if (!estado.servicio || !estado.fecha || !estado.slot) {
+      mostrarMsg('Completa la selección de servicio, fecha y horario.', 'error');
+      return;
+    }
+
+    const btn = document.getElementById('confirmBtn');
+    btn.disabled = true;
+    btn.querySelector('span').textContent = 'Agendando…';
+    mostrarMsg('', '');
+
+    // Construir datetime ISO
+    const fechaHoraISO = new Date(`${estado.fecha}T${estado.slot}:00`).toISOString();
+
+    const servicioLabel = `${estado.servicio.nombre} (${estado.servicio.dur} min)`;
+    const barberoLabel  = estado.barbero && estado.barbero.id !== 'sin'
+      ? estado.barbero.nombre.replace('\n', ' ')
+      : 'Sin preferencia';
+
+    const params = new URLSearchParams({
+      nombre,
+      telefono,
+      servicio:  servicioLabel,
+      barbero:   barberoLabel,
+      fechaHora: fechaHoraISO,
+      duracion:  String(estado.servicio.dur),
+    });
+
+    try {
+      await fetch(APPS_SCRIPT_URL + '?' + params.toString(), {
+        method: 'GET',
+        mode:   'no-cors',
+      });
+      // Con no-cors siempre llega opaque (sin error de red) = éxito asumido
+      mostrarExito(nombre, servicioLabel, barberoLabel);
+
+    } catch (err) {
+      mostrarMsg('Error de conexión. Por favor intenta de nuevo o contáctanos por WhatsApp.', 'error');
+      btn.disabled = false;
+      btn.querySelector('span').textContent = 'Confirmar Cita';
+    }
+  }
+
+  /* ══════════════════════════════════════════════════════════════
+     PANTALLA DE ÉXITO
+  ══════════════════════════════════════════════════════════════ */
+  function mostrarExito(nombre, servicio, barbero) {
+    document.getElementById('mainContent').style.display = 'none';
+    const screen = document.getElementById('successScreen');
+    screen.style.display = 'flex';
+
+    const fecha = estado.fecha ? formatearFecha(estado.fecha) : '';
+    const hora  = estado.slot  || '';
+
+    document.getElementById('successDetails').innerHTML = `
+      <div class="success-row">
+        <span class="success-row-key">Cliente</span>
+        <span class="success-row-val">${nombre}</span>
+      </div>
+      <div class="success-row">
+        <span class="success-row-key">Servicio</span>
+        <span class="success-row-val">${servicio}</span>
+      </div>
+      <div class="success-row">
+        <span class="success-row-key">Barbero</span>
+        <span class="success-row-val">${barbero}</span>
+      </div>
+      <div class="success-row">
+        <span class="success-row-key">Fecha</span>
+        <span class="success-row-val">${fecha}</span>
+      </div>
+      <div class="success-row">
+        <span class="success-row-key">Hora</span>
+        <span class="success-row-val">${hora}</span>
+      </div>
+    `;
+
+    // Marcar todos los pasos como completados
+    ['step1','step2','step3','step4'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) { el.classList.remove('active'); el.classList.add('done'); }
+    });
+
+    screen.scrollIntoView({ behavior: 'smooth' });
+  }
+
+  /* ══════════════════════════════════════════════════════════════
+     HELPERS
+  ══════════════════════════════════════════════════════════════ */
+  function mostrarMsg(texto, tipo) {
+    const el = document.getElementById('bkMsg');
+    el.textContent = texto;
+    el.className   = 'bk-msg' + (tipo ? ' ' + tipo : '');
+  }
+
+  function formatearFecha(str) {
+    // str = "YYYY-MM-DD"
+    const [y, m, d] = str.split('-');
+    const meses = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+    const dias  = ['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'];
+    const fecha = new Date(y, m - 1, d);
+    return `${dias[fecha.getDay()]} ${d} ${meses[m - 1]} ${y}`;
+  }
+  </script>
+
+</body>
+</html>
